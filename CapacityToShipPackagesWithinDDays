@@ -1,0 +1,31 @@
+class Solution {
+    public int shipWithinDays(int[] weights, int days) {
+        int low = Arrays.stream(weights).max().getAsInt();
+        int high = 0;
+        for(int i=0;i<weights.length;i++){
+            high += weights[i];
+        }
+        while(low<=high){
+            int mid = (low+high)/2;
+            int numberOfDays = totalDays(weights, days, mid);
+            if(numberOfDays <= days){
+                high = mid - 1;
+            } else 
+                low = mid + 1;
+        }
+        return low;
+    }
+    public int totalDays(int[] weights, int days, int totalWeight){
+        int count = 0;
+        int totalDays = 1;
+        for(int i=0;i < weights.length;i++){
+            if((count + weights[i]) > totalWeight){
+                totalDays++;
+                count = weights[i];
+            } else {
+                count = count + weights[i];
+            }
+        }
+        return totalDays;
+    }
+}
